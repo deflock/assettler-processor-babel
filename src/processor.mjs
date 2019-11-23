@@ -59,7 +59,9 @@ export default class Processor extends GenericProcessor {
         const buildPath = stripExtension(nodepath.resolve(this.destDir, relativePath)) + '.js';
 
         const content = await this.readFile(srcPath, 'utf8');
-        const result = await transformAsync(content, Object.assign({}, this.options.babelConfig || {}));
+        const result = await transformAsync(content, Object.assign({
+            filename: srcPath,
+        }, this.options.babelConfig || {}));
 
         await this.writeFile(buildPath, result.code);
     }
